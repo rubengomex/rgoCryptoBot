@@ -1,0 +1,21 @@
+{
+  "name": "rgocryptobot",
+  "version": "1.0.0",
+  "description": "Advance Cryptobot to do trades on coinbase pro",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rúben Gomes",
+  "license": "MIT",
+  "dependencies": {
+    "coinbase-pro": "~0.9.0",
+    "colors": "^1.2.1",
+    "commander": "^2.15.1",
+    "dotenv": "~8.1.0",
+    "randomstring": "^1.1.5",
+    "tulind": "^0.8.10",
+    "uuid": "^3.2.1"
+  }
+}
