@@ -3,11 +3,12 @@ const { Factory } = require('../strategy')
 const colors = require('colors/safe')
 
 class Runner {
-  constructor({ start, end, interval, product, strategyType }) {
+  constructor({ start, end, interval, product, strategyType, funds }) {
     this.startTime = start
     this.endTime = end
     this.interval = interval
     this.product = product
+    this.funds = funds
     this.historical = new Historical({
       start,
       end,

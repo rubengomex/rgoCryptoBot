@@ -29,9 +29,10 @@ class Position {
   profit() {
     const fee = 0.0025
     const entrance = this.enter.price * (1 + fee)
+
     if (this.exit) {
       const exit = this.exit.price * (1 - fee)
-      return exit - entrance
+      return (exit - entrance) * this.exit.size
     } else {
       return 0
     }

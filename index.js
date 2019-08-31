@@ -45,7 +45,8 @@ const main = async function() {
       end,
       product,
       interval,
-      strategyType: strategy
+      strategyType: strategy,
+      funds
     })
 
     await tester.start()

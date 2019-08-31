@@ -28,7 +28,7 @@ class Backtester extends Runner {
     this.strategy.positionOpened({
       price,
       time,
-      size: 1,
+      size: this.funds / price,
       id
     })
   }
