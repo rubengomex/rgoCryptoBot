@@ -1,13 +1,17 @@
-const Simple = require('./simple')
-const MACD = require('./simpleMACD')
+const Crossover = require('./crossover')
+const Volume = require('./volume')
+const SimpleCCI = require('./cci')
+const MACD = require('./macd')
 
-exports.create = function(type, data) {
+exports.create = function (type, data) {
   switch (type) {
     case 'macd':
       return new MACD(data)
-    case 'simple':
-      return new Simple(data)
+    case 'volume':
+      return new Volume(data)
+    case 'crossover':
+      return new Crossover(data)
     default:
-      return new MACD(data)
+      return new SimpleCCI(data)
   }
 }

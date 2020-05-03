@@ -14,28 +14,29 @@ function toDate(val) {
 program
   .version('1.0.0')
   .option('-i, --interval [interval]', 'Interval in seconds for candlestick', parseInt)
-  .option('-p, --product [product]', 'Product identifier', 'BTC-USD')
+  .option('-c, --coin [product]', 'Product [BTC-EUR, LTC-EUR, ETH-EUR]', 'BTC-EUR')
+  .option('-p, --period [Period]', 'Period for strategies', 20)
   .option('-s, --start [start]', 'Start time in unix seconds', toDate, yesterday)
-
   .option('-e, --end [end]', 'End time in unix seconds', toDate, now)
-  .option('-t, --strategy [strategy]', 'Strategy Type')
-  .option('-r, --type [type]', 'Run type')
-  .option('-f, --funds [funds]', 'Amount of money to use', parseInt)
+  .option('-t, --strategy [strategy]', 'The strategy for trading [cci, crossover]', 'cci')
+  .option('-r, --type [type]', 'Run type [backtester, trader]', 'backtester')
+  .option('-f, --funds [funds]', 'Amount of money to use', parseFloat)
   .option('-l, --live', 'Run live')
   .parse(process.argv)
 
-const main = async function() {
-  const { interval, product, start, end, strategy, live, type, funds } = program
+const main = async function () {
+  const { interval, coin, start, end, strategy, live, type, funds, period } = program
 
   if (type == 'trader') {
     const trader = new Trader({
       start,
       end,
-      product,
+      product: coin,
       interval,
       strategyType: strategy,
       live,
-      funds
+      funds,
+      period
     })
 
     await trader.start()
@@ -43,10 +44,11 @@ const main = async function() {
     const tester = new Backtester({
       start,
       end,
-      product,
+      product: coin,
       interval,
       strategyType: strategy,
-      funds
+      funds,
+      period
     })
 
     await tester.start()

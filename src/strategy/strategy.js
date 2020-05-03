@@ -2,21 +2,22 @@ const Trade = require('../models/trade')
 const Position = require('../models/position')
 
 class Strategy {
-  constructor({ onBuySignal, onSellSignal }) {
+  constructor({ period, onBuySignal, onSellSignal }) {
     this.onBuySignal = onBuySignal
     this.onSellSignal = onSellSignal
     this.positions = {}
-    this.maxActiveTrades = 3
+    this.maxActiveTrades = 2
+    this.period = period
   }
 
-  async run({ sticks, time }) {}
+  async run({ ticks, time }) {}
 
   getPositions() {
-    return Object.keys(this.positions).map(k => this.positions[k])
+    return Object.keys(this.positions).map((k) => this.positions[k])
   }
 
   openPositions() {
-    return this.getPositions().filter(p => p.state === 'open')
+    return this.getPositions().filter((p) => p.state === 'open')
   }
 
   async positionOpened({ price, time, size, id }) {

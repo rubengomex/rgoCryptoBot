@@ -12,10 +12,10 @@ class Trader extends Runner {
     this.broker = new Broker({ isLive: this.isLive, product: this.product })
     this.ticker = new Ticker({
       product: this.product,
-      onTick: async tick => {
+      onTick: async (tick) => {
         await this.onTick(tick)
       },
-      onError: error => {
+      onError: (error) => {
         this.onError(error)
       }
     })
@@ -30,6 +30,8 @@ class Trader extends Runner {
 
   async onBuySignal({ price, time }) {
     console.log(`BUY BUY BUY  ${price}`)
+    // TODO: add signal alert to slack/telegram/discord/email
+    // probably an idea to solve as SaaS
     const result = await this.broker.buy({ funds: this.funds, price })
     if (!result) return
 
@@ -44,15 +46,12 @@ class Trader extends Runner {
 
   async onSellSignal({ price, size, time, position }) {
     console.log(`SELL SELL SELL ${price}`)
+    // TODO: add signal to sell alert to slack/telegram/discord/email
+    // probably an idea to solve as SaaS
     const result = await this.broker.sell({ size, price })
     if (!result) return
 
-    this.strategy.positionClosed({
-      price: result.price,
-      time,
-      size: result.size,
-      id: position.id
-    })
+    this.strategy.positionClosed({ price: result.price, time, size: result.size, id: position.id })
   }
 
   async onTick(tick) {
@@ -75,13 +74,10 @@ class Trader extends Runner {
         })
       }
 
-      const sticks = this.history.slice()
-      sticks.push(this.currentCandle)
+      const ticks = this.history.slice()
+      ticks.push(this.currentCandle)
 
-      await this.strategy.run({
-        sticks: sticks,
-        time: time
-      })
+      await this.strategy.run({ ticks, time })
 
       if (this.currentCandle.state === 'closed') {
         const candle = this.currentCandle

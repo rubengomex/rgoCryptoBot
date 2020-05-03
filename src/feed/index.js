@@ -23,22 +23,18 @@ class Feed {
       { channels: ['user', 'heartbeat'] }
     )
 
-    this.socket.on('message', data => {
-      if (data.type === 'heartbeat') {
-        return
-      }
+    this.socket.on('message', (data) => {
+      if (data.type === 'heartbeat') return
       this.onUpdate(data)
     })
 
-    this.socket.on('error', error => {
+    this.socket.on('error', (error) => {
       this.onError(error)
       this.socket.connect()
     })
 
     this.socket.on('close', () => {
-      if (this.running) {
-        this.socket.connect()
-      }
+      if (this.running) this.socket.connect()
     })
   }
 
